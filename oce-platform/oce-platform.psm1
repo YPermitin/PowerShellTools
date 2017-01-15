@@ -156,3 +156,27 @@ function Start-1CInstances
         & ($platforms[0].InstallLocation + "bin\1cv8.exe")
     }
 }
+
+function Remove-1CCache
+<#
+.Synopsis
+   Удаляет кэш 1С для всех баз
+.DESCRIPTION
+   Удаляет кэш 1С на машине для всех баз
+.NOTES  
+    Name: oceHelper
+    Author: ypermitin@yandex.ru
+.LINK  
+    https://github.com/YPermitin/PowerShell-For-1C-Developer
+.EXAMPLE
+   Remove-1CCache
+.OUTPUTS
+    NULL
+#>
+{
+    Param(
+    )
+    
+    (Get-ChildItem "C:\Users\*\AppData\Local\1C\1Cv*\*", "C:\Users\*\AppData\Roaming\1C\1Cv*\*") | Where {$_.Name -as [guid]} |Remove-Item -Force -Recurse
+    Write-Host "Кэш успешно очищен!"
+}
