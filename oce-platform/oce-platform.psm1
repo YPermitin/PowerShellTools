@@ -115,3 +115,44 @@ function Get-1CEstart
 
     $starterPath
 }
+
+function Start-1CInstances
+<#
+.Synopsis
+   Запуск указанной версии платформы (если не указана, то запускается последняя)
+.DESCRIPTION
+   Запуск версии платформы, наиболее подходящей для указанного параметра. Если не указано, то запускается последняя найденная версия.
+   Если для заданного параметра поиска платформы найдено несколько экземпляров, то возникает ошибка.
+.NOTES  
+    Name: oceHelper
+    Author: ypermitin@yandex.ru
+.LINK  
+    https://github.com/YPermitin/PowerShell-For-1C-Developer
+.EXAMPLE
+   Start-1CInstances "8.3.8.1784"
+.OUTPUTS
+   null
+#>
+{
+    Param(
+        # Версия платформы для поиска
+        [string]$PlatformVersion = "*"
+    )
+    
+    $platforms = Get-1CInstances($PlatformVersion) | Sort-Object -property DisplayVersion –Descending
+
+    if ($platforms.length -eq 0)
+    {
+        Write-Error "Не удалось найти установленную платформу 1С:Предприятие!"
+        return
+    }
+
+    if($platforms.length -gt 1 -and $PlatformVersion -ne "*")
+    {
+        Write-Error "Не удалось однозначно определить запускаемую версию платформы!"
+        return
+    } else
+    {
+        & ($platforms[0].InstallLocation + "bin\1cv8.exe")
+    }
+}
