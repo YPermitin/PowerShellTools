@@ -74,6 +74,8 @@ PowerShell и все что с ним связано.
 * [Режим агента конфигуратора](https://infostart.ru/public/714417/)
 * [Меню пользователя в DOS-стиле, для скриптов PowerShell](https://infostart.ru/public/897919/)
 * [Полуавтоматическое обновление 1С посредством PowerShell](https://infostart.ru/public/404352/)
+* [Запуск chdbfl с параметрами с помощью PowerShell](https://infostart.ru/public/237533/)
+* [Защита информации при помощи Windows PowerShell](https://infostart.ru/public/21854/)
 
 ## Отказ от ответственности
 
