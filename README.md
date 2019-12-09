@@ -49,7 +49,11 @@ PowerShell и все что с ним связано.
 * [Включение регламентных заданий ИБ 1С для забывчивых администраторов](https://infostart.ru/public/1148559/)
 * [Скрипт резервного копирования PostgreSQL на Powershell](https://infostart.ru/public/794450/)
 * [Скрипт powershell - контроль размера файлов журнала регистрации 1С на сервере](https://infostart.ru/public/1134118/)
-
+* [Автоматизация администрирования и разработки 1С с помощью PowerShell](https://infostart.ru/public/562666/)
+* [Способы проверки доступности TCP-портов](https://infostart.ru/public/1057474/)
+* [Режим агента конфигуратора](https://infostart.ru/public/714417/)
+* [Меню пользователя в DOS-стиле, для скриптов PowerShell](https://infostart.ru/public/897919/)
+* [Полуавтоматическое обновление 1С посредством PowerShell](https://infostart.ru/public/404352/)
 
 ## Отказ от ответственности
 
