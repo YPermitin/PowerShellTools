@@ -43,7 +43,7 @@ $services1C | % {
         }
 
         if($null -ne $COMConnector) {
-            $serverAgent = $COMConnector.ConnectAgent($SrvAddr);
+            $serverAgent = $COMConnector.ConnectAgent($fullAgentAddress);
             $clusterList = $ServerAgent.GetClusters();
             foreach ($cluster in $clusterList) {
                 $serverAgent.Authenticate($Cluster, $clusterAdminName, $clusterAdminPassword)        
