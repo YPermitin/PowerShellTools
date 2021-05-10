@@ -12,7 +12,7 @@ $allServices1C | % {
     $regCommand = "regsvr32.exe /u ""$comcntrPath""";
     $platformVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($serviceExecPathRagent).FileVersion
 
-    Write-Host "Начало регистрации COM-компоненты 1С:Предприятия";
+    Write-Host "Начало отмены регистрации COM-компоненты 1С:Предприятия";
     Write-Host "Версия платформы: $platformVersion";
     Write-Host "Путь к DLL: ""$comcntrPath""";
     Write-Host "Команда регистрации компоненты: ""$regCommand""";
@@ -20,10 +20,10 @@ $allServices1C | % {
     try
     {
         cmd /c "$regCommand"
-        Write-Host "Регистрация компоненты успешно выполнена!" -ForegroundColor Green
+        Write-Host "Отмена регистрации компоненты успешно выполнена!" -ForegroundColor Green
     } catch
     {
-        Write-Host "Ошибка при регистрации компоненты!" -ForegroundColor Red
+        Write-Host "Ошибка при отмене регистрации компоненты!" -ForegroundColor Red
         Write-Host "Подробно:" -ForegroundColor Red
         Write-Host $Error[0] -ForegroundColor Red
     }

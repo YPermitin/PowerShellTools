@@ -131,3 +131,20 @@ function Send-TelegramTextMessage {
     return $results
     #------------------------------------------------------------------------
 }#function_Send-TelegramTextMessage
+
+<#
+Пример вызова
+#>
+
+# Настройки Телеграм
+$telegramBotId = "<BotId>" # Идентификатор бота
+$telegramChacId = "<ChatId>" # Идентификатор чата
+
+Send-TelegramTextMessage `
+    -BotToken $telegramBotId `
+    -ChatID $telegramChacId `
+    -Message "Hello from Telegram!" `
+    -ParseMode Markdown `
+    -Preview $false `
+    -Notification $false `
+    -Verbose
