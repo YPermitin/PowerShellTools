@@ -26,3 +26,13 @@ function CheckZabbixApi($zbxUserName, $zbxUserPassword, $zbxBaseUrl)
         throw "Wrong answer from API: $statusCode"
     }
 }
+
+# Пример использования
+try
+{
+    CheckZabbixApi();
+    Write-Host "API доступен!" -BackgroundColor Green
+} catch
+{
+    Write-Host "API недоступен!" -BackgroundColor Red
+}

@@ -4,7 +4,8 @@ $services1C = Get-WmiObject win32_service | ?{$_.Name -like '*'} |
 
 $obj = [PSCustomObject] @{
     data = @($services1C | % {
-        $serviceInfo = $_;
+        $serviceInfo = $_
+        $serviceExecPath = $serviceInfo.PathName
 
         $hash = [ordered]@{}
         $serviceExecPath.Split("-").Trim() | Where-Object { $_.Contains(" ") } | ForEach-Object { 
@@ -12,7 +13,17 @@ $obj = [PSCustomObject] @{
             $hash[$name] = $value
         }
 
-        $platformVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($serviceExecPathRagent).FileVersion        
+        $parsePathAgentExe = $serviceExecPath.Substring(1, $serviceExecPath.Length -1)
+        $parsePathAgentExe = $parsePathAgentExe.Substring(0, $parsePathAgentExe.IndexOf('"'))
+
+        if(Test-Path $parsePathAgentExe)
+        {
+            $platformVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($parsePathAgentExe).FileVersion
+        } else
+        {
+            $platformVersion = ""
+        }
+        
         $clusterPath = $hash.d -replace '"', ''
         $clusterRegPort = $hash.regport
         $clusterPort = $hash.port
@@ -21,8 +32,7 @@ $obj = [PSCustomObject] @{
 
         [PSCustomObject] @{
             'Name' = $serviceInfo.Name
-            'DisplayName' = $serviceInfo.DisplayName
-            'PathName' = $serviceInfo.PathName
+            'DisplayName' = $serviceInfo.DisplayName            
             'State' = $serviceInfo.State
             'Version' = $platformVersion
             'ClusterPath' = $clusterPath
@@ -30,6 +40,7 @@ $obj = [PSCustomObject] @{
             'ClusterPort' = $clusterPort
             'ClusterPortRange' = $clusterPortRange
             'ClusterRegPath' = $clusterRegPath
+            'PathName' = $serviceInfo.PathName
         }
     }) 
 }
