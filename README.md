@@ -53,6 +53,7 @@ PowerShell и все что с ним связано.
 
 Немного ссылок по использованию PowerShell для 1С:
 
+* [Занимательный PowerShell](https://infostart.ru/1c/articles/1148862/) - использование PowerShell в контексте 1С и немного про инструментарий.
 * [Командный интерпретатор для 1С](https://infostart.ru/public/1154294/) - Инструмент для выполнения команд CMD / PowerShell из 1С.
 * [Управление сервером приложений 1С с помощью PowerShell](https://infostart.ru/public/128756/)
 * [Мониторинг журнала регистрации при помощи Powershell](https://infostart.ru/public/865771/)
