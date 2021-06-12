@@ -82,8 +82,6 @@ $server1CSettings | ForEach-Object {
     $clusterAdminPassword = $_.clusterAdminPassword
     $fullAgentAddress = "tcp://" + $agentAddress + ":" + $agentPort;
 
-    $fullAgentAddress
-
     try {
         if($null -ne $COMConnector -and $null -ne $DBConn) {
             $serverAgent = $COMConnector.ConnectAgent($fullAgentAddress);

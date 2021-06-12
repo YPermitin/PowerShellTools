@@ -3,7 +3,6 @@ $services1C = Get-WmiObject win32_service | ?{$_.Name -like '*'} |
     Where-Object { $_.PathName  -Like "*ragent.exe*" };
 
 $services1C | % {
-    $serviceInfo = $_;
     $serviceExecPath = $services1C.PathName;
     $serviceExecPathRagent = $services1C.PathName.split('"')[1]
     
@@ -18,12 +17,8 @@ $services1C | % {
         break
     }
     
-    $platformVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($serviceExecPathRagent).FileVersion        
-    $clusterPath = $hash.d -replace '"', ''
-    $clusterRegPort = $hash.regport
+    $platformVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($serviceExecPathRagent).FileVersion
     $clusterPort = $hash.port
-    $clusterPortRange = $hash.range
-    $clusterRegPath = "$clusterPath\reg_$clusterRegPort"
 
     $agentPort = $clusterPort;
     $agentAddress = "localhost";
@@ -43,7 +38,7 @@ $services1C | % {
         }
 
         if($null -ne $COMConnector) {
-            $serverAgent = $COMConnector.ConnectAgent($SrvAddr);
+            $serverAgent = $COMConnector.ConnectAgent($fullAgentAddress);
             $clusterList = $ServerAgent.GetClusters();
             foreach ($cluster in $clusterList) {
                 $serverAgent.Authenticate($Cluster, $clusterAdminName, $clusterAdminPassword)                   

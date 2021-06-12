@@ -5,7 +5,6 @@
 $allServices1C | % {
 
     $services1C = $_;
-    $serviceExecPath = $services1C.PathName;
     $serviceExecPathRagent = $services1C.PathName.split('"')[1];
     $serviceDirectory = [System.IO.Path]::GetDirectoryName($serviceExecPathRagent);
     $comcntrPath = "$serviceDirectory\comcntr.dll";
