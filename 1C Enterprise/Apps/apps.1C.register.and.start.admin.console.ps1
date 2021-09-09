@@ -1,10 +1,10 @@
 <#
-Р РµРіРёСЃС‚СЂР°С†РёСЏ Рё Р·Р°РїСѓСЃРє РєРѕРЅСЃРѕР»Рё Р°РґРјРёРЅРёСЃС‚СЂРёСЂРѕРІР°РЅРёСЏ РЅСѓР¶РЅРѕР№ РІРµСЂСЃРёРё РїР»Р°С‚С„РѕСЂРјС‹ 1РЎ
+Регистрация и запуск консоли администрирования нужной версии платформы 1С
 #>
 
 $installedApps = New-Object System.Collections.ArrayList
 Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |  
-Where-Object {  ($_.DisplayName -like "*1C:РџСЂРµРґРїСЂРёСЏС‚РёРµ*") -or ($_.DisplayName -like "*1C:Enterprise*") } |
+Where-Object {  ($_.DisplayName -like "*1C:Предприятие*") -or ($_.DisplayName -like "*1C:Enterprise*") } |
 Select-Object DisplayName, DisplayVersion, Publisher, InstallDate, InstallLocation |
 ForEach-Object {
     $installedApps.Add(
@@ -18,7 +18,7 @@ ForEach-Object {
     ) | Out-Null;
 }
 Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | 
-Where-Object {  ($_.DisplayName -like "*1C:РџСЂРµРґРїСЂРёСЏС‚РёРµ*") -or ($_.DisplayName -like "*1C:Enterprise*") } |
+Where-Object {  ($_.DisplayName -like "*1C:Предприятие*") -or ($_.DisplayName -like "*1C:Enterprise*") } |
 Select-Object DisplayName, DisplayVersion, Publisher, InstallDate, InstallLocation |
 ForEach-Object {
     $installedApps.Add(
@@ -32,14 +32,14 @@ ForEach-Object {
     ) | Out-Null;
 }
 
-Write-Host "РќР°Р№РґРµРЅРЅС‹Рµ РІРµСЂСЃРёРё РїР»Р°С‚С„РѕСЂРјС‹ 1РЎ:"
+Write-Host "Найденные версии платформы 1С:"
 $menu = @{}
 for ($i=1;$i -le $installedApps.count; $i++) 
 { 
     Write-Host "$i. $($installedApps[$i-1].DisplayName) ($($installedApps[$i-1].InstallLocation))" 
     $menu.Add($i,($installedApps[$i-1]))
 }
-[int]$answer = Read-Host 'Р’С‹Р±РµСЂРёС‚Рµ СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅСѓСЋ РїР»Р°С‚С„РѕСЂРјСѓ 1РЎ'
+[int]$answer = Read-Host 'Выберите установленную платформу 1С'
 $selection = $menu.Item($answer)
 
 if($null -ne $selection)
@@ -50,29 +50,29 @@ if($null -ne $selection)
     $commonPath = Join-Path -Path $1cv8Path -ChildPath "common"    
     $consolePath = ""    
 
-    $foundMscFiles = Get-Childitem вЂ“Path $commonPath | Where-Object { $_.Name -like "1CV8 Servers*.msc" }
+    $foundMscFiles = Get-Childitem –Path $commonPath | Where-Object { $_.Name -like "1CV8 Servers*.msc" }
     
     if($null -ne $foundMscFiles -and $foundMscFiles.Length -ge 0)
     {
         $consolePath = Join-Path -Path $commonPath -ChildPath $foundMscFiles[0].Name
     } else
     {
-        Write-Host "РќРµ РЅР°Р№РґРµРЅР° РѕСЃРЅР°СЃС‚РєР° РєРѕРЅСЃРѕР»Рё Р°РґРјРёРЅРёСЃС‚СЂРёСЂРѕРІР°РЅРёСЏ (1CV8 Servers*.msc) РІ РєР°С‚Р°Р»РѕРіРµ: $commonPath" -BackgroundColor Red
+        Write-Host "Не найдена оснастка консоли администрирования (1CV8 Servers*.msc) в каталоге: $commonPath" -BackgroundColor Red
         return
     }    
 
     if(Test-Path $redminPath)
     {
-        Write-Host "РќР°С‡Р°Р»Рѕ СЂРµРіРёСЃС‚СЂР°С†РёРё РєРѕРјРїРѕРЅРµРЅС‚С‹ radmin.dll" -BackgroundColor Blue
+        Write-Host "Начало регистрации компоненты radmin.dll" -BackgroundColor Blue
         regsvr32 /s $redminPath
-        Write-Host "РЈСЃРїРµС€РЅРѕ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅР° РєРѕРјРїРѕРЅРµРЅС‚Р° radmin.dll" -BackgroundColor Green
+        Write-Host "Успешно зарегистрирована компонента radmin.dll" -BackgroundColor Green
 
         C:\Windows\System32\mmc.exe $consolePath
     } else
     {
-        Write-Host "РќРµ РЅР°Р№РґРµРЅР° РєРѕРјРїРѕРЅРµРЅС‚ radmin.dll РїРѕ РїСѓС‚Рё: $redminPath" -BackgroundColor Red
+        Write-Host "Не найдена компонент radmin.dll по пути: $redminPath" -BackgroundColor Red
     }
 } else
 {
-    Write-Host "Р’С‹Р±СЂР°РЅРѕ РЅРµРєРѕСЂСЂРµРєС‚РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ." -BackgroundColor Red
+    Write-Host "Выбрано некорректное значение." -BackgroundColor Red
 }
