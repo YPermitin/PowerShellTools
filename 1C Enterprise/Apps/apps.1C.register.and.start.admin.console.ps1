@@ -4,7 +4,7 @@
 
 $installedApps = New-Object System.Collections.ArrayList
 Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |  
-Where-Object {  ($_.DisplayName -like "*1C:Предприятие*") -or ($_.DisplayName -like "*1C:Enterprise*") } |
+Where-Object {  ($_.DisplayName -like "*1C:Предприятие*") -or ($_.DisplayName -like "*1C:Enterprise*") -or ($_.DisplayName -like "*1С:Предприятие*") -or ($_.DisplayName -like "*1С:Enterprise*") } |
 Select-Object DisplayName, DisplayVersion, Publisher, InstallDate, InstallLocation |
 ForEach-Object {
     $installedApps.Add(
@@ -18,7 +18,7 @@ ForEach-Object {
     ) | Out-Null;
 }
 Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | 
-Where-Object {  ($_.DisplayName -like "*1C:Предприятие*") -or ($_.DisplayName -like "*1C:Enterprise*") } |
+Where-Object {  ($_.DisplayName -like "*1C:Предприятие*") -or ($_.DisplayName -like "*1C:Enterprise*") -or ($_.DisplayName -like "*1С:Предприятие*") -or ($_.DisplayName -like "*1С:Enterprise*") } |
 Select-Object DisplayName, DisplayVersion, Publisher, InstallDate, InstallLocation |
 ForEach-Object {
     $installedApps.Add(
