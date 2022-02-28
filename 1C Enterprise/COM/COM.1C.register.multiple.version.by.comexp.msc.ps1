@@ -147,14 +147,14 @@ function ConfigureSecurity($comAdmin, $registeredApplication, $registeredCompone
         $Role = $Roles.Add()
         $Role.Value("Name") = "CreatorOwner"
     }
-    $Roles.SaveChanges();
+    $Roles.SaveChanges() | Out-Null;
 
     if(![string]::IsNullOrEmpty($username))
     {
         $Users = $Roles.GetCollection("UsersInRole", "CreatorOwner")
         $User = $Users.Add()
         $User.Value("User") = $username
-        $Users.SaveChanges();
+        $Users.SaveChanges() | Out-Null;
 
         $Comps = $apps.GetCollection("Components", $AppID)
         $Comps.Populate();
@@ -168,7 +168,7 @@ function ConfigureSecurity($comAdmin, $registeredApplication, $registeredCompone
             $RolesForComponent = $Comps.GetCollection("RolesForComponent", $CLSID)
             $RoleForComponent = $RolesForComponent.Add()
             $RoleForComponent.Value("Name") = "CreatorOwner"
-            $RolesForComponent.SaveChanges();
+            $RolesForComponent.SaveChanges() | Out-Null;
         }
         Else {
             Write-Warning "CLSID $CLSID not found"
