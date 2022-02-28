@@ -124,6 +124,58 @@ function InstallComponent($comAdmin, $registeredApplication) {
     $registeredComponent
 }
 
+function ConfigureSecurity($comAdmin, $registeredApplication, $registeredComponent, $username = "") {
+
+    $AppID = $registeredApplication.AppId;   
+    $CLSID = $registeredComponent.CLSID
+
+    $Apps = $comAdmin.GetCollection("Applications")
+    $Apps.Populate();
+
+    # Добавляем права доступа на приложение и компоненты.
+    #https://msdn.microsoft.com/en-us/library/windows/desktop/ms678849%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
+    $Roles = $Apps.GetCollection("Roles", $AppID)
+    $Roles.Populate();
+
+    $found = $false
+    foreach ( $Role in $Roles ) {
+        if ($Role.Key -eq "CreatorOwner") {
+            $found = $true
+        }
+    }
+    if (!($found)) {
+        $Role = $Roles.Add()
+        $Role.Value("Name") = "CreatorOwner"
+    }
+    $Roles.SaveChanges();
+
+    if(![string]::IsNullOrEmpty($username))
+    {
+        $Users = $Roles.GetCollection("UsersInRole", "CreatorOwner")
+        $User = $Users.Add()
+        $User.Value("User") = $username
+        $Users.SaveChanges();
+
+        $Comps = $apps.GetCollection("Components", $AppID)
+        $Comps.Populate();
+
+        ForEach ($Comp In $Comps ) {
+          If ($Comp.Key -eq $CLSID) {
+              $ComponentFound = $True
+          }
+        }
+        If ($ComponentFound ) {
+            $RolesForComponent = $Comps.GetCollection("RolesForComponent", $CLSID)
+            $RoleForComponent = $RolesForComponent.Add()
+            $RoleForComponent.Value("Name") = "CreatorOwner"
+            $RolesForComponent.SaveChanges();
+        }
+        Else {
+            Write-Warning "CLSID $CLSID not found"
+        }
+    }
+}
+
 $comAdmin = New-Object -comobject COMAdmin.COMAdminCatalog
 
 # Выполнение регистрации всех компонентов
@@ -135,7 +187,8 @@ $dllForRegistration | ForEach-Object {
     $registeredComponent = InstallComponent $comAdmin $registeredApplication
     $_.CLSID = $registeredComponent.CLSID;
 
-    # Обновить настройки 
+    # Обновить настройки доступа
+    ConfigureSecurity $comAdmin $registeredApplication $registeredComponent $($_.UserName)
 }
 
 # Корректруем настройки реестра, "сломанные" после регистрации нескольких COM-компонентов 1C
