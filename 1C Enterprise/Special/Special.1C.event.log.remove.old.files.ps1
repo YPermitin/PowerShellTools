@@ -8,7 +8,7 @@ $services1C = Get-WmiObject win32_service | ?{$_.Name -like '*'} |
     Where-Object { $_.PathName  -Like "*ragent.exe*" };
 
 $services1C | % {
-    $serviceExecPath = $services1C.PathName;
+    $serviceExecPath = $_.PathName;
 
     $hash = [ordered]@{}
     $serviceExecPath.Split("-").Trim() | Where-Object { $_.Contains(" ") } | ForEach-Object { 
