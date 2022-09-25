@@ -2,6 +2,8 @@
 
 PowerShell и все что с ним связано.
 
+Материалы по другим темам Вы можете найти на сайте [ypermitin.github.io](https://ypermitin.github.io/), а новости по проектам или новым материалам в [Telegram-канале](https://t.me/TinyDevVault).
+
 ## Что здесь
 
 Репозиторий содержит:
